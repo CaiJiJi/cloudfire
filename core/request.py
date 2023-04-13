@@ -39,7 +39,7 @@ class RequestManager:
         cookies = await page.context.cookies(url)
         html = await page.content()
         await page.close()
-        await self.cookie_manager.add_cookies(cookies)
+        await self.cookie_manager.add_cookies(url, cookies)
         return Response(cookies=cookies, content=html, status=status)
 
     async def _get_aiohttp(
