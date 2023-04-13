@@ -14,6 +14,9 @@ handler = logging.FileHandler("logs.txt")
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+proxy_ = {
+        'server': '127.0.0.1:7890'
+    }
 
 @app.on_event("startup")
 async def config():
@@ -24,7 +27,7 @@ async def config():
         "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
     )
     app.state.browser = await (
-        await app.state.pwsession.firefox.launch(headless=True)
+        await app.state.pwsession.firefox.launch(headless=True, proxy=proxy_)
     ).new_context(user_agent=app.state.user_agent)
     app.state.httpsession = ClientSession()
     app.state.cookie_manager = cookies.CookieManager()
