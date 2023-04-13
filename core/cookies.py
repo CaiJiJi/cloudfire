@@ -10,13 +10,10 @@ class CookieManager:
         self.redis = redis
         self.cookie_map = {}
 
-    async def add_cookies(self, cookies: List[Cookie]):
+    async def add_cookies(self, url, cookies: List[Cookie]):
         if not self.redis:
             for cookie in cookies:
-                if cookie["domain"].startswith('.'):
-                    domain = cookie["domain"][1:]
-                else:
-                    domain = cookie["domain"]
+                domain = urlparse(url).netloc
                 try:
                     self.cookie_map[domain][cookie["name"]] = cookie["value"]
                 except KeyError:
