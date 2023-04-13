@@ -49,7 +49,7 @@ class RequestManager:
         headers = {"User-Agent": self.user_agent}
         if await self.cookie_manager.get_cookies(url):
             res = await self.session.get(
-                url, cookies=await self.cookie_manager.get_cookies(url), headers=headers
+                url, cookies=await self.cookie_manager.get_cookies(url), headers=headers, proxy="http://127.0.0.1:7890"
             )
             if res.status == 503 or res.status == 403:
                 if not self.browser:
@@ -57,7 +57,7 @@ class RequestManager:
                 return await self._get_browser(url=url)
             return Response(content=await res.text(), status=res.status)
         else:
-            res = await self.session.get(url, headers=headers)
+            res = await self.session.get(url, headers=headers, proxy="http://127.0.0.1:7890")
             if res.status == 503 or res.status == 403:
                 if not self.browser:
                     raise Exception("Browser not provided. Aborting")
